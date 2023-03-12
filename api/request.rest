@@ -1,4 +1,4 @@
-GET http://localhost:3001/todos HTTP/1.1
+GET https://todo-backend-blush.vercel.app/todos HTTP/1.1
 
 ###
 
