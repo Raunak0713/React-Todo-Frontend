@@ -2,12 +2,18 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect('mongodb://0.0.0.0:27017/react-todo', {
+
+
+mongoose.connect("mongodb+srv://Raunak:Raunak2003@cluster0.spm5oss.mongodb.net/?retryWrites=true&w=majority", {
 	useNewUrlParser: true, 
 	useUnifiedTopology: true 
 }).then(() => console.log("Connected to MongoDB")).catch(console.error);
@@ -38,14 +44,24 @@ app.delete('/todo/delete/:id', async (req, res) => {
 });
 
 app.get('/todo/complete/:id', async (req, res) => {
-	const todo = await Todo.findById(req.params.id);
-
-	todo.complete = !todo.complete;
-
-	todo.save();
-
-	res.json(todo);
-})
+	try {
+	  const todo = await Todo.findById(req.params.id);
+  
+	  if (!todo) {
+		return res.status(404).json({ message: 'Todo not found' });
+	  }
+  
+	  todo.complete = !todo.complete;
+  
+	  await todo.save();
+  
+	  res.json(todo);
+	} catch (error) {
+	  console.error(error);
+	  res.status(500).json({ message: 'Internal server error' });
+	}
+  });
+  
 
 app.put('/todo/update/:id', async (req, res) => {
 	const todo = await Todo.findById(req.params.id);
