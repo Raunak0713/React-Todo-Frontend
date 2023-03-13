@@ -11,7 +11,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-
+app.get('/', async (req,res) => {
+	res.send('Hello from');
+})
 
 mongoose.connect("mongodb+srv://Raunak:Raunak2003@cluster0.spm5oss.mongodb.net/?retryWrites=true&w=majority", {
 	useNewUrlParser: true, 
